@@ -1,4 +1,5 @@
 import re
+from newmm_tokenizer.tokenizer import word_tokenize
 
 
 def compute_num_pads(list_bboxes):
@@ -30,13 +31,13 @@ def lowercase_and_clean_trailing_spaces(sentences):
 
 
 def add_space_between_non_alphanumeric_symbols(sentences):
-    return [re.sub(r'([^\w0-9])', r" \1 ", sentences[i]) for i in range(len(sentences))]
+    return [re.sub(r'([^\w0-9\u0E01-\u0E3A\u0E40-\u0E4E])', r" \1 ", sentences[i]) for i in range(len(sentences))] # add Thai alphabets and numbers
 
 
 def tokenize(list_sentences):
     res_sentences_list = []
     for i in range(len(list_sentences)):
-        sentence = list_sentences[i].split(' ')
+        sentence = word_tokenize(list_sentences[i]) # Tokenize with Newmm
         while '' in sentence:
             sentence.remove('')
         res_sentences_list.append(sentence)
